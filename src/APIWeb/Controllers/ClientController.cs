@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
+using EmailService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,13 +16,19 @@ namespace APIWeb.Controllers
         private readonly ILogger<ClientController> _logger;
 
         private readonly IWorkService _workService;
+        private readonly IProfessionalDataService _professionalDataService;
+        private readonly IEmailSender _emailSender;
 
         public ClientController(ILogger<ClientController> logger
-            , IWorkService workService)
+            , IWorkService workService
+            , IProfessionalDataService professionalDataService
+            , IEmailSender emailSender)
         {
             _logger = logger;
 
             _workService = workService;
+            _professionalDataService = professionalDataService;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -39,20 +46,15 @@ namespace APIWeb.Controllers
         }
 
         [HttpGet("GetProfessionalData")]
-        public async Task<IActionResult> GetProfessionalData()
+        public async Task<IActionResult> GetProfessionalData(string lang)
         {
             var entirePageViewModel = new EntirePageViewModel();
 
             try
             {
-                entirePageViewModel.AboutMeViewModel = new AboutMeViewModel()
-                {
-                    Title = "I'm Samuel",
-                    Text = "Lorem ipsum. Lorem ipsum. Salum."
-                };
+                var professionalData = await _professionalDataService.GetByLanguageAsync(lang);
 
-                var workList = await _workService.GetAsync();
-                entirePageViewModel.ListWorkViewModel = MapListTo<Work, WorkViewModel>(workList);
+                entirePageViewModel = MapTo<ProfessionalDataReport, EntirePageViewModel>(professionalData);
             }
             catch(Exception e)
             {
@@ -60,6 +62,16 @@ namespace APIWeb.Controllers
             }
 
             return Json(entirePageViewModel);
+        }
+
+        [HttpPost("SendEmail")]
+        public async Task<IActionResult> SendEmail([FromBody] EmailFormModel emailFormModel)
+        {
+            var resultMessage = await _emailSender.SendEmailForContactAsync(
+                new EmailMessage(emailFormModel.Name, emailFormModel.Address, emailFormModel.Subject
+                , emailFormModel.Content));
+
+            return Json(resultMessage);
         }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Repositories
 {
-    public interface IWorkRepository
+    public interface IProjectRepository
     {
-        Task<List<Work>> GetByLanguageAsync(string language);
+        Task<List<Project>> GetByLanguageAsync(string language);
     }
 }

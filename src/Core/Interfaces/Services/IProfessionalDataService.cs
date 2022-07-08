@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Services
 {
-    public interface IWorkService
+    public interface IProfessionalDataService
     {
-        Task<List<Work>> GetByLanguageAsync(string language);
+        Task<ProfessionalDataReport> GetByLanguageAsync(string language);
     }
 }

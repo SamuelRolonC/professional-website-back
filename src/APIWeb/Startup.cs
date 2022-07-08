@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Core;
 using Core.Interfaces.Services;
+using EmailService;
 using Infraestructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,13 +49,18 @@ namespace APIWeb
 
             #region Database Repositories
 
+            services.AddSingleton<AboutMeRepository>();
             services.AddSingleton<WorkRepository>();
+            services.AddSingleton<ProjectRepository>();
 
             #endregion
 
             #region Database Services
 
             services.AddScoped<IWorkService, WorkService>();
+            services.AddScoped<IProfessionalDataService, ProfessionalDataService>();
+
+            services.AddScoped<IEmailSender, EmailSender>();
 
             #endregion
 
@@ -78,6 +84,11 @@ namespace APIWeb
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
