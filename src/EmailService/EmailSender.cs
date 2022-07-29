@@ -1,9 +1,9 @@
-﻿using MimeKit;
+﻿using Core;
+using Core.Entities;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Core;
-using MailKit.Net.Smtp;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,13 +14,17 @@ namespace EmailService
     {
         private readonly EmailConfiguration _emailConfig;
 
-        private readonly string _messageSended = "Sended";
-        private readonly string _tagName = "<replaceable>name<replaceable />";
-        private readonly string _tagAddress = "<replaceable>address<replaceable />";
-        private readonly string _tagSubject = "<replaceable>subject<replaceable />";
-        private readonly string _tagContent = "<replaceable>content<replaceable />";
+        private readonly string _messageSent = "0";
+        
+        private readonly string _tagReplaceable = "<replaceable>X<replaceable />";
+
+        private readonly string _replaceName = "name";
+        private readonly string _replaceAddress = "address";
+        private readonly string _replaceSubject = "subject";
+        private readonly string _replaceContent = "content";
+
         private readonly string _templateRelativePath = "../EmailService/EmailTemplates/";
-        private readonly string _templateContactFile = "contact.html";
+        private readonly string _templateContactFile = "Contact/contact.es.html";
 
         public EmailSender(EmailConfiguration emailConfig)
         {
@@ -39,7 +43,7 @@ namespace EmailService
             try
             {
                 message.Content = GenerateContentForContact(message);
-                
+                message.Subject = $"{SystemParameters.General.WebsiteName} - Tenés un nuevo mensaje";
                 message.From = new Dictionary<string, string>()
                 {
                     { _emailConfig.SenderAddress, _emailConfig.SenderName }
@@ -59,6 +63,8 @@ namespace EmailService
 
             return resultMessage;
         }
+
+        #region Private functions
 
         private MimeMessage CreateEmailMessage(EmailMessage message)
         {
@@ -86,7 +92,7 @@ namespace EmailService
 
                     client.Send(mailMessage);
 
-                    message = _messageSended;
+                    message = _messageSent;
                 }
                 catch(Exception ex)
                 {
@@ -117,7 +123,7 @@ namespace EmailService
 
                     await client.SendAsync(mailMessage);
 
-                    message = _messageSended;
+                    message = _messageSent;
                 }
                 catch (Exception ex)
                 {
@@ -150,10 +156,10 @@ namespace EmailService
                 }
 
                 message.Content = message.Content.Replace("\n", "<br/>");
-                template = template.Replace(_tagName, message.From.FirstOrDefault().Value);
-                template = template.Replace(_tagAddress, message.From.FirstOrDefault().Key);
-                template = template.Replace(_tagSubject, message.Subject);
-                template = template.Replace(_tagContent, message.Content);
+                template = template.Replace(GetReplaceableTag(_replaceName), message.From.FirstOrDefault().Value);
+                template = template.Replace(GetReplaceableTag(_replaceAddress), message.From.FirstOrDefault().Key);
+                template = template.Replace(GetReplaceableTag(_replaceSubject), message.Subject);
+                template = template.Replace(GetReplaceableTag(_replaceContent), message.Content);
 
                 content = template;
             }
@@ -164,5 +170,13 @@ namespace EmailService
 
             return content;
         }
+
+        private string GetReplaceableTag(string replaceable)
+        {
+            var replaceableTag = _tagReplaceable.Replace("X", replaceable);
+            return replaceableTag;
+        }
+
+        #endregion
     }
 }

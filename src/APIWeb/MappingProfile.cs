@@ -12,23 +12,26 @@ namespace APIWeb
         public MappingProfile()
         {
             CreateMap<Work, WorkViewModel>()
-                .ForMember(vm => vm.CompanyViewModel, x => x.MapFrom(e => e.Company));
+                .ForMember(d => d.CompanyViewModel, x => x.MapFrom(s => s.Company));
 
             CreateMap<Company, CompanyViewModel>();
 
             CreateMap<ProfessionalDataReport, EntirePageViewModel>()
-                .ForMember(vm => vm.AboutMeViewModel, x => x.MapFrom(e => e.AboutMe))
-                .ForMember(vm => vm.ListWorkViewModel, x => x.MapFrom(e => e.WorkList))
-                //.ForMember(vm => vm.ListWorkViewModel, 
-                    //x => x.MapFrom(e => GenerateListWorkViewModel(e.WorkList)))
-                .ForMember(vm => vm.ListProjectViewModel, x => x.MapFrom(e => e.ProjectList));
+                .ForMember(d => d.AboutMeViewModel, x => x.MapFrom(s => s.AboutMe))
+                .ForMember(d => d.ListWorkViewModel, x => x.MapFrom(s => s.WorkList))
+                //.ForMember(d => d.ListWorkViewModel, 
+                    //x => x.MapFrom(s => GenerateListWorkViewModel(e.WorkList)))
+                .ForMember(d => d.ListProjectViewModel, x => x.MapFrom(s => s.ProjectList));
 
             CreateMap<AboutMe, AboutMeViewModel>();
 
             CreateMap<Work, WorkViewModel>()
-                .ForMember(vm => vm.CompanyViewModel, x => x.MapFrom(e => e.Company));
+                .ForMember(d => d.CompanyViewModel, x => x.MapFrom(s => s.Company));
 
             CreateMap<Project, ProjectViewModel>();
+
+            CreateMap<EmailFormModel, Contact>()
+                .ForMember(d => d.Email, x => x.MapFrom(s => s.Address));
         }
 
         private List<WorkViewModel> GenerateListWorkViewModel(List<Work> workList)

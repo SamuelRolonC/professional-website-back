@@ -13,7 +13,13 @@ namespace EmailService
         public Dictionary<string, string> To { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
+        public string Language { get; set; }
         
+        public EmailMessage()
+        {
+
+        }
+
         public EmailMessage(string fromName, string fromAddress, string subject, string content)
         {
             From = new Dictionary<string, string>

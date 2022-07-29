@@ -1,7 +1,3 @@
-    using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Core;
 using Core.Interfaces.Services;
@@ -9,12 +5,9 @@ using EmailService;
 using Infraestructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using Services;
@@ -52,6 +45,7 @@ namespace APIWeb
             services.AddSingleton<AboutMeRepository>();
             services.AddSingleton<WorkRepository>();
             services.AddSingleton<ProjectRepository>();
+            services.AddSingleton<ContactRepository>();
 
             #endregion
 
@@ -59,6 +53,7 @@ namespace APIWeb
 
             services.AddScoped<IWorkService, WorkService>();
             services.AddScoped<IProfessionalDataService, ProfessionalDataService>();
+            services.AddScoped<IContactService, ContactService>();
 
             services.AddScoped<IEmailSender, EmailSender>();
 

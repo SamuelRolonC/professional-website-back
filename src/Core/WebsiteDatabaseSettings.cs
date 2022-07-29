@@ -10,6 +10,7 @@
         public string WorkCollectionName { get; set; }
         public string AboutMeCollectionName { get; set; }
         public string ProjectCollectionName { get; set; }
+        public string ContactCollectionName { get; set; }
 
         #endregion
     }
@@ -24,6 +25,7 @@
         string WorkCollectionName { get; set; }
         string AboutMeCollectionName { get; set; }
         string ProjectCollectionName { get; set; }
+        string ContactCollectionName { get; set; }
 
         #endregion
     }
