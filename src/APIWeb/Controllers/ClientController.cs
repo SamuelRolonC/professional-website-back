@@ -4,6 +4,7 @@ using EmailService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace APIWeb.Controllers
@@ -15,13 +16,16 @@ namespace APIWeb.Controllers
         private readonly ILogger<ClientController> _logger;
 
         private readonly IProfessionalDataService _professionalDataService;
+        private readonly IBlogService _blogService;
 
         public ClientController(ILogger<ClientController> logger
-            , IProfessionalDataService professionalDataService)
+            , IProfessionalDataService professionalDataService
+            , IBlogService blogService)
         {
             _logger = logger;
 
             _professionalDataService = professionalDataService;
+            _blogService = blogService;
         }
 
         [HttpGet("GetProfessionalData")]
@@ -41,6 +45,26 @@ namespace APIWeb.Controllers
             }
 
             return Json(entirePageViewModel);
+        }
+
+        [HttpGet("GetBlogData")]
+        public async Task<IActionResult> GetBlogData()
+        {
+            var blogDataViewModel = new BlogDataViewModel();
+
+            try
+            { 
+                var listBlog = await _blogService.GetAllAsync();
+
+                blogDataViewModel.ListBlogViewModel = MapListTo<Blog, BlogViewModel>(listBlog);
+            }
+            catch (Exception e)
+            {
+                blogDataViewModel.ListBlogViewModel = new List<BlogViewModel>();
+                blogDataViewModel.ErrorMessage = GetDeepException(e, "Error al obtener los datos. ");
+            }
+
+            return Json(blogDataViewModel);
         }
     }
 }

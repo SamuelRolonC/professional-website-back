@@ -46,6 +46,7 @@ namespace APIWeb
             services.AddSingleton<WorkRepository>();
             services.AddSingleton<ProjectRepository>();
             services.AddSingleton<ContactRepository>();
+            services.AddSingleton<BlogRepository>();
 
             #endregion
 
@@ -54,6 +55,7 @@ namespace APIWeb
             services.AddScoped<IWorkService, WorkService>();
             services.AddScoped<IProfessionalDataService, ProfessionalDataService>();
             services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<IBlogService, BlogService>();
 
             services.AddScoped<IEmailSender, EmailSender>();
 

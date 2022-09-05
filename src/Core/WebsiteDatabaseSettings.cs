@@ -11,6 +11,7 @@
         public string AboutMeCollectionName { get; set; }
         public string ProjectCollectionName { get; set; }
         public string ContactCollectionName { get; set; }
+        public string BlogCollectionName { get; set; }
 
         #endregion
     }
@@ -26,6 +27,7 @@
         string AboutMeCollectionName { get; set; }
         string ProjectCollectionName { get; set; }
         string ContactCollectionName { get; set; }
+        string BlogCollectionName { get; set; }
 
         #endregion
     }
