@@ -1,6 +1,6 @@
-dbWebsite = connect('mongodb://localhost:27017/website');
+// dbWebsite = connect('mongodb://localhost:27017/website');
 
-dbWebsite.aboutMe.insertMany({
+db.aboutMe.insertMany([{
     title: "I'm Samuel",
     text: "Lorem ipsum. Lorem ipsum. Salum.",
     languaje: "en"
@@ -9,4 +9,4 @@ dbWebsite.aboutMe.insertMany({
     title: "Soy Samuel",
     text: "Lorem ipsum. Lorem ipsum. Salum.",
     languaje: "es"
-});
+}]);

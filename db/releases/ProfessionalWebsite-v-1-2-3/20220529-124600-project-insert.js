@@ -1,6 +1,6 @@
-dbWebsite = connect('mongodb://localhost:27017/website');
+// dbWebsite = connect('mongodb://localhost:27017/website');
 
-dbWebsite.project.insertMany({
+db.project.insertMany([{
     title: "Capacitar",
     description: "Digital therapy",
     url: "https://www.google.com",
@@ -27,4 +27,4 @@ dbWebsite.project.insertMany({
     url: "https://www.google.com",
     imagePath: "",
     languaje: "es"
-});
+}]);
