@@ -9,6 +9,8 @@ services:
       - "8080:80"
     env_file: ./src/common.env
     restart: always
+    networks:
+      - professional-website-net
   db:
     image: professional-website-db
     build: ./db/
@@ -18,6 +20,11 @@ services:
     volumes:
       - "vol-prof-api:/data/db2"
     restart: always
+    networks:
+      - professional-website-net
 
 volumes:
   vol-prof-api:
+
+networks:
+  professional-website-net:
