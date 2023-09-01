@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    image: professional-website-api
+    build: ./src/
+    container_name: prof-api
+    ports:
+      - "8080:80"
+    env_file: ./src/common.env
+    restart: always
+    networks:
+      - professional-website-net
+  db:
+    image: professional-website-db
+    build: ./db/
+    container_name: prof-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - "vol-prof-api:/data/db2"
+    restart: always
+    networks:
+      - professional-website-net
+
+volumes:
+  vol-prof-api:
+
+networks:
+  professional-website-net:
